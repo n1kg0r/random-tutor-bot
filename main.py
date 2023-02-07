@@ -22,7 +22,7 @@ import logging
 from typing import Dict
 
 from telegram import __version__ as TG_VER
-from telegram import Chat, ChatMember, ChatMemberUpdated, Update
+from telegram import Chat, Update
 try:
     from telegram import __version_info__
 except ImportError:
@@ -311,7 +311,7 @@ def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
     persistence = PicklePersistence(filepath="conversationbot")
-    application = Application.builder().token("6074102819:AAHEeqA1Y_xFz88Y_GoGYwFBYZ4en-uGK-s").persistence(persistence).build()
+    application = Application.builder().token("").persistence(persistence).build()
 
     # Add conversation handler with the states CHOOSING, TYPING_CHOICE and TYPING_REPLY
     conv_handler = ConversationHandler(
