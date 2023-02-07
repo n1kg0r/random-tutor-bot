@@ -22,7 +22,7 @@ import logging
 from typing import Dict
 
 from telegram import __version__ as TG_VER
-from telegram import Chat, ChatMember, ChatMemberUpdated, Update
+from telegram import Chat, Update
 try:
     from telegram import __version_info__
 except ImportError:
@@ -44,6 +44,9 @@ from telegram.ext import (
     PicklePersistence,
     filters,
 )
+
+import os
+PORT = int(os.environ.get('PORT', 5000))
 
 # Enable logging
 logging.basicConfig(
@@ -304,6 +307,11 @@ async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return ConversationHandler.END
 
 
+def error(update, context):
+    """Log Errors caused by Updates."""
+    logger.warning('Update "%s" caused error "%s"', update, context.error)
+
+
 
 
 
@@ -354,7 +362,8 @@ def main() -> None:
     application.add_handler(show_data_handler)
 
     # Run the bot until the user presses Ctrl-C
-    application.run_polling()
+    application.run_webhook(listen="0.0.0.0", port=int(PORT), url_path='TOKEN', webhook_url='HEROKU_APPNAME' + 'TOKEN')
+    # application.bot.setWebhook()
 
 
 if __name__ == "__main__":
